@@ -15,6 +15,7 @@ import { BooksService } from './books.service';
 import { CreateBookDTO } from './dtos/create-book.dto';
 import { UpdateBookDTO } from './dtos/update-book.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { FavoriteBookDTO } from './dtos/favorite.book.dto';
 
 @Controller('books')
 export class BooksController {
@@ -58,5 +59,11 @@ export class BooksController {
       throw new NotFoundException('Book not found');
     await this.booksService.deleteById(id);
     return { success: true };
+  }
+  
+  @Post('/like')
+  @UseGuards(JwtAuthGuard)
+  likedBook(@Body() likeBook: FavoriteBookDTO) {
+    return this.booksService.likedBook(likeBook);
   }
 }
